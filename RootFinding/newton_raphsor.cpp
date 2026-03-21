@@ -26,7 +26,7 @@ using Func = std::function<double(double)>;
 
 // The method
 template<RealFunction F, RealFunction DF>
-auto newton_raphsor(const double p0, F &f, DF &f_prime) -> double {
+auto newton_raphsor(const double p0, const F &f, const DF &f_prime) -> double {
     size_t i{1};
     double p{}, pp{p0};
     while (i <= MAX_ITER) {
@@ -34,7 +34,7 @@ auto newton_raphsor(const double p0, F &f, DF &f_prime) -> double {
 
         // Probably diverged, we would get division by 0 (or near 0) here
         if (std::abs(fpp) < 1e-12)
-            throw std::domain_error("Derivative too small, possible divergence");
+            throw std::runtime_error("Derivative too small, possible divergence");
 
         p = pp - f(pp) / fpp;
         std::println("Iteration {}: {}", i, p);
@@ -49,7 +49,7 @@ auto newton_raphsor(const double p0, F &f, DF &f_prime) -> double {
     }
 
     // No convergence
-    throw std::domain_error("Max iteration limit exceeded");
+    throw std::runtime_error("Max iteration limit exceeded");
 }
 
 // Driver code
@@ -88,6 +88,8 @@ int main() {
             std::println("Newton's method returned {}\n", r);
         } catch (const std::domain_error &e) {
             std::print("Method failed because: {}\n\n", e.what());
+        } catch (const std::runtime_error &e) {
+            std::print("{}\n\n", e.what());
         }
     });
 

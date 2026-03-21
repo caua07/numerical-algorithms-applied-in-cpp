@@ -6,3 +6,4 @@ set(CMAKE_CXX_STANDARD 26)
 
 add_executable(bisection RootFinding/bisection.cpp)
 add_executable(newton_raphsor RootFinding/newton_raphsor.cpp)
+add_executable(false_position RootFinding/false_position.cpp)
