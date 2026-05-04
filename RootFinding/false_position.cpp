@@ -1,7 +1,3 @@
-/*
- * Authored by The ADM (@bernardobrust)
- */
-
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -12,6 +8,8 @@
 constexpr double EPS = 1e-6;
 // Max iterations
 constexpr size_t MAX_ITER = 256;
+// STUB
+constexpr double stub = std::numeric_limits<double>::max();
 
 // Real functions template
 template <typename F>
@@ -26,13 +24,17 @@ using Func = std::function<double(double)>;
 template <RealFunction F>
 auto false_position(const double a, const double b, const F &f) -> double {
   double la{a}, lb{b}, c{}, fa{f(la)}, fb{f(lb)}, fc{};
-  if (fa * fb >= 0)
-    throw std::domain_error("Bolzano's theorem not satisfied");
+  if (fa * fb >= 0) {
+    std::println("Bolzano's theorem not satisfied");
+    return stub;
+  }
 
   size_t i{1};
   while (i <= MAX_ITER) {
-    if (std::abs(fb - fa) < EPS)
-      throw std::runtime_error("Division by zero: denominator too small");
+    if (std::abs(fb - fa) < EPS) {
+      std::println("Division by zero: denominator too small");
+      return stub;
+    }
 
     c = la - ((fa * (lb - la)) / (fb - fa));
     fc = f(c);
@@ -54,7 +56,8 @@ auto false_position(const double a, const double b, const F &f) -> double {
   }
 
   // No convergence
-  throw std::runtime_error("Max iteration limit exceeded");
+  std::println("Max iteration limit exceeded");
+  return stub;
 }
 
 // Driver code
@@ -77,14 +80,11 @@ int main() {
     std::println("Give an initial range [a, b] (space separated)");
     std::cin >> a >> b;
 
-    try {
-      double r{false_position(a, b, f)};
+    double r{false_position(a, b, f)};
+    if (r == stub)
+      std::println("Method failed, maybe try a better initial guess latter?");
+    else
       std::println("False position method returned {}\n", r);
-    } catch (const std::domain_error &e) {
-      std::print("Method failed because: {}\n\n", e.what());
-    } catch (const std::runtime_error &e) {
-      std::print("{}\n\n", e.what());
-    }
   });
 
   return 0;

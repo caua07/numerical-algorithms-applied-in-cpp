@@ -1,7 +1,3 @@
-/*
- * Authored by The ADM (@bernardobrust)
- */
-
 #include <algorithm>
 #include <cmath>
 #include <functional>
@@ -12,6 +8,8 @@
 constexpr double EPS = 1e-6;
 // Max iterations
 constexpr size_t MAX_ITER = 256;
+// STUB
+constexpr double stub = std::numeric_limits<double>::max();
 
 // Real functions template
 template <typename F>
@@ -25,39 +23,49 @@ using Func = std::function<double(double)>;
 // The method
 template <RealFunction F, RealFunction DF>
 auto newton_raphsor(const double p0, const F &f, const DF &f_prime) -> double {
-  size_t i{1};
+  static constexpr double minimum_derivative{1e-12};
+
   double p{}, pp{p0};
-  while (i <= MAX_ITER) {
+
+  for (size_t i{1}; i <= MAX_ITER; ++i) {
     const double fpp = f_prime(pp);
 
     // Probably diverged, we would get division by 0 (or near 0) here
-    if (std::abs(fpp) < 1e-12)
-      throw std::runtime_error("Derivative too small, possible divergence");
+    if (std::abs(fpp) < minimum_derivative) {
+      std::println("Derivative too small, the method diverged");
+      return stub;
+    }
 
-    p = pp - f(pp) / fpp;
+    const double fp = f(pp);
+    p = pp - fp / fpp;
     std::println("Iteration {}: {}", i, p);
 
     // Converged
-    if (std::abs(p - pp) < EPS or std::abs(f(p)) < EPS)
+    if (std::abs(p - pp) < EPS or std::abs(fp) < EPS)
       return p;
 
     // Next iteration
     pp = p;
-    ++i;
   }
 
   // No convergence
-  throw std::runtime_error("Max iteration limit exceeded");
+  std::println("Maximum iteration limit achieved, possible divergence");
+  return stub;
 }
 
 // Driver code
 int main() {
   // Functions to test
   std::array<std::pair<Func, Func>, 3> functions = {
-      {{[](const double x) { return x * x - std::cos(x); },
+      {// x^2 - cos(x)
+       {[](const double x) { return x * x - std::cos(x); },
         [](const double x) { return 2 * x + std::sin(x); }},
+
+       // x^3 - 1
        {[](const double x) { return x * x * x - 1; },
         [](const double x) { return 3 * x * x; }},
+
+       // e^x - 10x
        {[](const double x) { return std::exp(x) - 10 * x; },
         [](const double x) { return std::exp(x) - 10; }}}};
 
@@ -72,14 +80,12 @@ int main() {
     std::println("Give an initial guess p0");
     std::cin >> p0;
 
-    try {
-      double r{newton_raphsor(p0, fs.first, fs.second)};
+    double r{newton_raphsor(p0, fs.first, fs.second)};
+    // We can check if r stubbed here:
+    if (r == stub)
+      std::println("Method failed, maybe try a better initial guess latter?");
+    else
       std::println("Newton's method returned {}\n", r);
-    } catch (const std::domain_error &e) {
-      std::print("Method failed because: {}\n\n", e.what());
-    } catch (const std::runtime_error &e) {
-      std::print("{}\n\n", e.what());
-    }
   });
 
   return 0;
