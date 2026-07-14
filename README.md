@@ -5,4 +5,6 @@ Tho we are using modern C++ features (like `std::print` and lambdas), we aim for
 
 You can run the code in UNIX systems with `gcc` using `./run.sh {NAME OF THE METHOD}`.
 
+You can run the automated tests with `./test.sh`.
+
 Reference book: Numerical Analysis, by Burden and Faires

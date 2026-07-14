@@ -1,8 +1,12 @@
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <concepts>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <print>
+#include <utility>
 
 // Tolerance
 constexpr double EPS = 1e-6;
@@ -71,6 +75,7 @@ false_position (const double a, const double b, const F &f)
 }
 
 // Driver code
+#ifndef HERMES_TEST
 int
 main ()
 {
@@ -107,3 +112,4 @@ main ()
 
   return 0;
 }
+#endif

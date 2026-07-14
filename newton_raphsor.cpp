@@ -1,8 +1,12 @@
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <concepts>
 #include <functional>
 #include <iostream>
+#include <limits>
 #include <print>
+#include <utility>
 
 // Tolerance
 constexpr double EPS = 1e-6;
@@ -59,6 +63,7 @@ newton_raphsor (const double p0, const F &f, const DF &f_prime)
 }
 
 // Driver code
+#ifndef HERMES_TEST
 int
 main ()
 {
@@ -101,3 +106,4 @@ main ()
 
   return 0;
 }
+#endif

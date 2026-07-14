@@ -4,7 +4,9 @@
 
 #include <cmath>
 #include <iostream>
+#include <limits>
 #include <print>
+#include <stdexcept>
 
 const double PI = std::acos(-1);
 constexpr double EPS = 10e-6;
@@ -15,7 +17,22 @@ inline auto func_one_prime(const double x) -> double {
 
 inline auto f(const double x) -> double { return x * x - std::cos(x); }
 
+bool ver_function(double a, double b) {
+  const double FA = f(a);
+  const double FB = f(b);
+
+  if (FA * FB >= 0) {
+    std::cout << "A funcão nesses intervalos não satisfaz os pré requisitos para o método de bisseção.";
+    return false;
+  } else return true;
+}
+
 auto bisect(double a, double b, const double tol, const double n) -> double {
+  bool passes = ver_function(a, b);
+  if (passes == false) {
+    return std::numeric_limits<double>::max ();
+  };
+
   double FA = f(a);
 
   for (int i{0}; i < n; ++i) {
@@ -38,6 +55,11 @@ auto bisect(double a, double b, const double tol, const double n) -> double {
 
 auto bisect_rec(const double a, const double b, const double tol,
                 const double n) -> double {
+
+  bool passes = ver_function(a, b);
+  if (passes == false) {
+    return std::numeric_limits<double>::max ();
+  };
   const double FA = f(a);
   const double FB = f(b);
   const double p = a + (b - a) / 2;
@@ -59,6 +81,7 @@ auto bisect_rec(const double a, const double b, const double tol,
   throw std::domain_error("Failed to converge");
 }
 
+#ifndef HERMES_TEST
 auto main() -> int {
   try {
     double biTest = bisect_rec(-1, 0, EPS, 256);
@@ -76,3 +99,4 @@ auto main() -> int {
 
   return 0;
 }
+#endif
