@@ -28,13 +28,13 @@ using Func = std::function<double (double)>;
 template <RealFunction F, RealFunction DF>
 auto
 newton_raphsor (const double p0, const F &f, const DF &f_prime)
-    -> std::pair<double, size_t>
+    -> std::pair<double, int>
 {
   static constexpr double minimum_derivative{ 1e-12 };
 
   double p{}, pp{ p0 };
 
-  for (size_t i{ 1 }; i <= MAX_ITER; ++i)
+  for (int i{ 1 }; i <= MAX_ITER; ++i)
     {
       const double fpp = f_prime (pp);
 

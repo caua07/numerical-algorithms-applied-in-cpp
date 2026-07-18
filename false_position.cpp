@@ -6,7 +6,6 @@
 #include <iostream>
 #include <limits>
 #include <print>
-#include <type_traits>
 #include <utility>
 
 // Tolerance
@@ -36,7 +35,7 @@ auto inline same_sign (double a, double b) -> bool
 template <RealFunction F>
 auto
 false_position (const double a, const double b, const F &f)
-    -> std::pair<double, size_t>
+    -> std::pair<double, int>
 {
   double la{ a }, lb{ b }, c{}, fa{ f (la) }, fb{ f (lb) }, fc{};
 
@@ -49,7 +48,7 @@ false_position (const double a, const double b, const F &f)
       return std::make_pair (stub, -1);
     }
 
-  size_t i{ 1 };
+  int i{ 1 };
   while (i <= MAX_ITER)
     {
       if (std::abs (fb - fa) < EPS)
