@@ -6,8 +6,8 @@
 #include <iostream>
 #include <limits>
 #include <print>
-#include <utility>
 #include <type_traits>
+#include <utility>
 
 // Tolerance
 constexpr double EPS = 1e-6;
@@ -25,9 +25,11 @@ concept RealFunction = requires (F f, double x) {
 // Function type signature
 using Func = std::function<double (double)>;
 
-// Auxiliary function (not templated, but works for all numerical methods working with double)
-auto inline same_sign(double a, double b) -> bool {
-    return (a > 0 and b > 0) or (a < 0 and b < 0);
+// Auxiliary function (not templated, but works for all numerical methods
+// working with double)
+auto inline same_sign (double a, double b) -> bool
+{
+  return (a > 0 and b > 0) or (a < 0 and b < 0);
 }
 
 // The method
@@ -38,8 +40,10 @@ false_position (const double a, const double b, const F &f)
 {
   double la{ a }, lb{ b }, c{}, fa{ f (la) }, fb{ f (lb) }, fc{};
 
-  // Math says that fa * fb >= 0 implies that the signal does not change, however, multiplication can easily cause overflow and can be trivially avoidad in this case
-  if (same_sign(fa, fb))
+  // Math says that fa * fb >= 0 implies that the signal does not change,
+  // however, multiplication can easily cause overflow and can be trivially
+  // avoidad in this case
+  if (same_sign (fa, fb))
     {
       std::println ("Bolzano's theorem not satisfied");
       return std::make_pair (stub, -1);
@@ -82,7 +86,6 @@ false_position (const double a, const double b, const F &f)
 }
 
 // Driver code
-#ifndef HERMES_TEST
 int
 main ()
 {
@@ -119,4 +122,3 @@ main ()
 
   return 0;
 }
-#endif

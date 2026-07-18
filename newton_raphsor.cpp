@@ -63,7 +63,6 @@ newton_raphsor (const double p0, const F &f, const DF &f_prime)
 }
 
 // Driver code
-#ifndef HERMES_TEST
 int
 main ()
 {
@@ -106,4 +105,3 @@ main ()
 
   return 0;
 }
-#endif
