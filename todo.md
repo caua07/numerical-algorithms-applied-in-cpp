@@ -4,4 +4,5 @@
 - [x] Steffensen's method
 - [x] Replace size_t with int
 - [x] Remove macros
-- [ ] Update readme with information about the methods
+- [x] Update readme with information about the methods
+- [ ] Write a template header?
