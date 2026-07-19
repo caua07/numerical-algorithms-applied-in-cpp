@@ -1,6 +1,7 @@
 # Le TODO list
 - [ ] Re-write Analysis in markdown (or LaTex?)
-- [ ] Fixed-point iteration
-- [ ] Steffensen's method
-- [ ] Replace size_t with int
-- [ ] Remove macros
+- [x] Fixed-point iteration
+- [x] Steffensen's method
+- [x] Replace size_t with int
+- [x] Remove macros
+- [ ] Update readme with information about the methods
